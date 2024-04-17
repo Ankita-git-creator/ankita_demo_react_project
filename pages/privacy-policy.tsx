@@ -1,10 +1,11 @@
+import { usePrivacyDetails } from "@/hooks/react-query/query-hooks/cmsQuery.hooks";
 import Wrapper from "@/layout/wrapper/Wrapper";
 import { primaryColors } from "@/themes/_muiPalette";
 import styled from "@emotion/styled";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import Link from "next/link";
+import { useEffect } from "react";
 
 export const TermsWrapper = styled(Box)`
   .title_block {
@@ -46,20 +47,32 @@ export const TermsWrapper = styled(Box)`
 `;
 
 const Index = () => {
+  const { data: privacyInfo, isLoading, refetch } = usePrivacyDetails(false);
+  console.log("privacyInfo", privacyInfo);
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
   return (
     <Wrapper>
       <Container fixed>
         <TermsWrapper>
           <Box className="title_block">
             <Typography variant="h1">
-              Privacy{" "}
+              {privacyInfo?.title.split(" ")[0]}{" "}
               <Typography variant="caption" className="red_span">
-                Policy
+                {privacyInfo?.title.substr(
+                  (privacyInfo?.title).indexOf(" ") + 1
+                )}
               </Typography>
             </Typography>
           </Box>
           <Box className="terms_content">
-            <Typography>
+            <div
+              dangerouslySetInnerHTML={{ __html: privacyInfo?.content ?? "" }}
+            />
+            {/* <Typography>
               Effective date: Jan 1 2024 <br></br> The Abundant Kindness Trust,
               located at 439 Westwood Shopping Center Suite 427 (“us”, “we”, or
               “our”) operates the https://www.outdoors.ninja website (the
@@ -290,7 +303,7 @@ const Index = () => {
               contact us:
               <br></br>
               By email: support@outdoors.ninja
-            </p>
+            </p> */}
           </Box>
         </TermsWrapper>
       </Container>

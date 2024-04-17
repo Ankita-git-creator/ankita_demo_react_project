@@ -18,7 +18,9 @@ export const endpoints = {
   },
   cms: {
     about: "aboutpolicy/details",
-    faq: "faq/all"
+    faq: "faq/all",
+    terms_conditions: "cms/detail/terms-conditions",
+    privacy_policy: "cms/detail/privacy-policy"
   },
   landing: {
     home: "landing-page"

@@ -1,24 +1,36 @@
+import { useTermsDetails } from "@/hooks/react-query/query-hooks/cmsQuery.hooks";
 import Wrapper from "@/layout/wrapper/Wrapper";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import { useEffect } from "react";
 import { TermsWrapper } from "./privacy-policy";
 
 const Index = () => {
+  const { data: termsInfo, isLoading, refetch } = useTermsDetails(false);
+  console.log("termsInfo", termsInfo);
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
   return (
     <Wrapper>
       <Container fixed>
         <TermsWrapper>
           <Box className="title_block">
             <Typography variant="h1">
-              Terms &{" "}
+              {termsInfo?.title.split(" ").slice(0, 2).join(" ")}{" "}
               <Typography variant="caption" className="red_span">
-                Condition
+                {termsInfo?.title.split(" ").slice(2).join(" ")}
               </Typography>
             </Typography>
           </Box>
           <Box className="terms_content">
-            <Typography variant="h2" className="heading2">
+            <div
+              dangerouslySetInnerHTML={{ __html: termsInfo?.content ?? "" }}
+            />
+            {/* <Typography variant="h2" className="heading2">
               Interpretation and Definitions
             </Typography>
             <Typography variant="h3">Interpretation</Typography>
@@ -272,7 +284,7 @@ const Index = () => {
             </p>
             <ul>
               <li>By email: support@outdoors.ninja</li>
-            </ul>
+            </ul> */}
           </Box>
         </TermsWrapper>
       </Container>
